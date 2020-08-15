@@ -1,91 +1,86 @@
-# Turtle Graphics Game – Space Turtle Chomp
-
+#Turtle Graphics Game
 import turtle
 import math
 import random
 import winsound
 import time
 
-# Set up screen
-turtle.setup(700,700)
+#Set up screen
+turtle.setup(650,650)
 wn = turtle.Screen()
 wn.bgcolor("black")
-wn.bgpic("water.gif")
+wn.bgpic("kbgame-bg.gif")
 wn.tracer(3)
 
-# Draw border
+#Draw border
 mypen = turtle.Turtle()
+mypen.color("white")
 mypen.penup()
-mypen.setposition(-300, -300)
+mypen.setposition(-300,-300)
 mypen.pendown()
-mypen.pensize(2)
-mypen.color('lightsteelblue')
+mypen.pensize(3)
 for side in range(4):
     mypen.forward(600)
     mypen.left(90)
 mypen.hideturtle()
 
-# Create player turtle
+
+#Create player turtle
 player = turtle.Turtle()
-player.turtlesize(2)
-player.color('hotpink1')
-player.shape('turtle')
-player.penup() # won't leave a line when it moves, eg. penup you don't draw, pendown you do draw
+player.color("darkorange")
+player.shape("turtle")
+player.penup()
 player.speed(0)
 
-# Create opponent turtle
+#Create compition turtle
 comp = turtle.Turtle()
-comp.color('red')
-comp.shape('turtle')
+comp.color("red")
+comp.shape("turtle")
 comp.penup()
 comp.setposition(random.randint(-290, 290), random.randint(-290, 290))
 
-# Create competition score
+#Create Comp score
 mypen2 = turtle.Turtle()
-mypen2.color('red')
+mypen2.color("red")
 mypen2.hideturtle()
 
-# Create variable score
-score = 0
-comp_score = 0
 
-# Create food
-#create the maximum number of cabbages and an empty list
+#Create variabl score
+score = 0
+compscore = 0
+
+#create food
 maxFoods = 10
 foods = []
 
-# create a for loop using maxFoods
 for count in range(maxFoods):
     foods.append (turtle.Turtle())
-    foods[count].color("seagreen3")
+    foods[count].color("lightgreen")
     foods[count].shape("circle")
     foods[count].shapesize(.5)
     foods[count].penup()
     foods[count].speed(0)
     foods[count].setposition(random.randint(-290, 290), random.randint(-290, 290))
 
-# Set speed variable
+#Set speed variable
 speed = 1
 
-# Set game time limit for 1 minute (60 seconds)
+
+#Set game time limit for 1 minute (60 seconds)
 timeout = time.time() + 10*6
 
-# Define functions
-def turn_left():
-        player.left(30) #turns 30degrees left, keys needs to be pushed and let go
+#Define  functions
 
-def turn_right():
-        player.right(30)
+def turnleft():
+    player.left(30)
 
-def increase_speed():
+def turnright():
+    player.right(30)
+
+def inscreasespeed():
     global speed
     speed += 1
 
-def decrease_speed():
-    global speed
-    speed -= 1
-
-# Collision checking using a function
 def isCollision(t1, t2):
        d = math.sqrt(math.pow(t1.xcor()-t2.xcor(),2) + math.pow(t1.ycor()-t2.ycor(),2))
        if d < 20:
@@ -93,13 +88,14 @@ def isCollision(t1, t2):
        else:
            return False
 
-# Set keyboard binding
-# onkey method - computer listen to a cretain key, when pressed, runs assigned function
+#Set keyboard bindings
 turtle.listen()
-turtle.onkey(turn_left, 'Left')
-turtle.onkey(turn_right, 'Right')
-turtle.onkey(increase_speed, 'Up')
-turtle.onkey(decrease_speed, 'Down')
+turtle.onkey(turnleft, "Left")
+turtle.onkey(turnright, "Right")
+turtle.onkey(inscreasespeed, "Up")
+
+
+
 
 while True:
     gametime = 0
@@ -108,7 +104,7 @@ while True:
     gametime = gametime - 1
 
     player.forward(speed)
-    comp.forward(4)
+    comp.forward(12)
 
     #Boundary Player Checking x coordinate
     if player.xcor() > 290 or player.xcor() <-290:
@@ -164,22 +160,34 @@ while True:
            food.setposition(random.randint(-290, 290), random.randint(-290, 290))
            food.right(random.randint(0,360))
            winsound.PlaySound('chomp.wav', winsound.SND_ASYNC)
-           comp_score+=1
+           compscore+=1
            #Draw the Comp score on the screen
            mypen2.undo()
            mypen2.penup()
            mypen2.hideturtle()
            mypen2.setposition(200, 310)
-           scorestring ="Score: %s" %comp_score
+           scorestring ="Score: %s" %compscore
            mypen2.write(scorestring, False, align="left", font=("Arial", 14, "normal"))
 
 
-if (int(score) > int(comp_score)):
+if (int(score) > int(compscore)):
     mypen.setposition(0, 0)
     mypen.color("yellow")
     mypen.write("Game Over: You WIN", False, align="center", font=("Arial", 28, "normal"))
-    time.sleep(15)
 else:
     mypen.setposition(0, 0)
     mypen.color("yellow")
     mypen.write("Game Over: You LOOSE", False, align="center", font=("Arial", 28, "normal"))
+
+
+
+
+
+
+
+
+
+
+
+
+# delay = raw_input("Press Enter to finish.")
